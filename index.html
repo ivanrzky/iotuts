@@ -1,0 +1,48 @@
+<script>
+const getBackendData = async () => {
+  const resp = await fetch('backend.php')
+  const data = await resp.json()
+  return data
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const suhumax = document.getElementById('suhumax')
+  const suhumin= document.getElementById('suhumin')
+  const suhurata= document.getElementById('suhurata')
+  const nilai_suhu_max_max = document.getElementById('nilai_suhu_max_max')
+  const month_year = document.getElementById('month_year')
+
+  const data = await getBackendData()
+  
+  suhumax.innerText = `Suhu Max: ${data.suhumax}`
+  suhumin.innerText = `Suhu Min: ${data.suhumin}`
+  suhurata.innerText = `Suhu Rata: ${data.suhurata}`
+
+  nilai_suhu_max_max.innerHTML = data.nilai_suhu_max_humid_max.map((value) => {
+    return `<p>IDX: ${value.idx} | Suhun: ${value.suhun} | Humid: ${value.humid} | Kecerahan: ${value.kecerahan} | Timestamp: ${value.timestamp}</p>`
+  }).join('')
+
+  month_year.innerHTML = data.month_year_max.map((value) => {
+    const parts = value.month_year.split('-')
+    const month = parts[0]
+    const year = parts[1]
+    return `<p>Month ${month} | Year ${year}</p>`
+  }).join('')
+})
+
+</script>
+
+<h1>Data Dari Backend</h1>
+
+<p id="suhumax"></p>
+<p id="suhumin"></p>
+<p id="suhurata"></p>
+<p>Suhu Min: 53</p>
+
+<p>Rata Rata</p>
+
+<div id="nilai_suhu_max_max"></div>
+
+<p>Month Year</p>
+
+<div id="month_year"></div>
